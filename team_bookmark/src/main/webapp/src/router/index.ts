@@ -12,6 +12,21 @@ const routes = [
         name: "About",
         component: () => import("../views/About.vue"),
     },
+    {
+        path: "/create",
+        name: "CreateRoom",
+        component: () => import("../views/CreateRoom.vue"),
+    },
+    {
+        path: "/join",
+        name: "JoinRoom",
+        component: () => import("../views/JoinRoom.vue"),
+    },
+    {
+        path: "/join/bookmark",
+        name: "BookmarkList",
+        component: () => import("../views/BookmarkList.vue"),
+    },
 ];
 
 const router = createRouter({
