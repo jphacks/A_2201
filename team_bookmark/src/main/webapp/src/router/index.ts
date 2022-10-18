@@ -27,6 +27,11 @@ const routes = [
         name: "BookmarkList",
         component: () => import("../views/BookmarkList.vue"),
     },
+    {
+        path: "/join/bookmark/add",
+        name: "AddBookmark",
+        component: () => import("../views/AddBookmark.vue"),
+    },
 ];
 
 const router = createRouter({
