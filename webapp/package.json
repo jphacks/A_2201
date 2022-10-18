@@ -5,9 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "prod": "vue-cli-service build --dest ../resources/META-INF/resources/",
-    "watch": "vue-cli-service build --mode=development --watch --dest ../resources/META-INF/resources/"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "bulma": "^0.9.4",
