@@ -1,6 +1,6 @@
 <template>
   <div class="add_bookmark">
-    <h1>ブックマーク追加</h1>
+    <h1>ブックマーク詳細</h1>
   </div>
 </template>
 

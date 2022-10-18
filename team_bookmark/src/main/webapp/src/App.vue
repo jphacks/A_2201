@@ -3,9 +3,9 @@
   <router-link to="/about">About</router-link> |
   <router-link to="/create">Create</router-link> |
   <router-link to="/join">Join</router-link> |
-  <router-link to="/join/bookmark">Bookmark</router-link>
+  <router-link to="/join/bookmark">Bookmark</router-link> |
+  <router-link to="/join/bookmark/add">AddBookmark</router-link>
   <router-view/>
-  <img alt="Vue logo" src="./assets/logo.png">
 </template>
 
 <script>
