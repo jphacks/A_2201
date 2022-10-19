@@ -1,6 +1,7 @@
 <template>
   <div class="join_room">
     <h1>部屋に入る</h1>
+    <p>参加したい部屋の名前を教えてください！</p>
     <div class="container is-max-desktop">
       <div class="field has-addons">
         <div class="control is-expanded">
@@ -15,6 +16,7 @@
         </div>
       </div>
     </div>
+    <p>エラー文はここ</p>
   </div>
 </template>
 
