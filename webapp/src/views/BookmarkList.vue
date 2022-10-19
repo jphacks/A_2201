@@ -63,7 +63,7 @@
         </th>
       </tr>
       <tr>
-        <th class="has-text-centered">Quarkus　 入門</th>
+        <th class="has-text-centered">Quarkus 入門</th>
         <th class="has-text-centered">
           <button class="button is-small is-primary" >
             Info
