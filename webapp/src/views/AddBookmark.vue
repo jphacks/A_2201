@@ -68,15 +68,15 @@
         </div>
         <div class="field-body">
           <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="0">
+            <input type="radio" name="expert" v-model="choice1" value="3">
             高い
           </label>
           <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="1">
+            <input type="radio" name="expert" v-model="choice1" value="2">
             普通
           </label>
           <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="2">
+            <input type="radio" name="expert" v-model="choice1" value="1">
             低い
           </label>
         </div>
@@ -87,15 +87,15 @@
         </div>
         <div class="field-body">
           <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="0">
+            <input type="radio" name="text_length" v-model="choice2" value="3">
             多い
           </label>
           <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="1">
+            <input type="radio" name="text_length" v-model="choice2" value="2">
             普通
           </label>
           <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="2">
+            <input type="radio" name="text_length" v-model="choice2" value="1">
             少ない
           </label>
         </div>
@@ -106,22 +106,22 @@
         </div>
         <div class="field-body">
           <label class="radio">
-            <input type="radio" name="contents" v-model="choice3" value="0">
+            <input type="radio" name="contents" v-model="choice3" value="3">
             はい
           </label>
           <label class="radio">
-            <input type="radio" name="contents" v-model="choice3" value="1">
+            <input type="radio" name="contents" v-model="choice3" value="2">
             どちらでもない
           </label>
           <label class="radio">
-            <input type="radio" name="contents" v-model="choice3" value="2">
+            <input type="radio" name="contents" v-model="choice3" value="1">
             いいえ
           </label>
         </div>
       </div>
     </div>
     <div>
-      result: {{ animals[choice1][choice2][choice3] }}
+      <img alt="animal" :src="require('@/assets/'+ choice1 + '-' + choice3 + '-' + choice2 +'.png')">
     </div>
     <div class="field is-horizontal">
       <div class="field-label is-normal">
@@ -153,33 +153,25 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "AddBookmark",
-  data() {
-    return {
-      choice1: 1,
-      choice2: 1,
-      choice3: 1,
-      animals: []
-    }
-  },
-  created() {
-    // create 3-dimensional array
-    // the size is 3x3x3
-    let value = 0;
-    for (let i = 0; i < 3; i++) {
-      this.animals.push([])
-      for (let j = 0; j < 3; j++) {
-        this.animals[i].push([])
-        for (let k = 0; k < 3; k++) {
-          this.animals[i][j].push(value++)
-        }
-      }
+  setup() {
+    const choice1 = ref(2);
+    const choice2 = ref(2);
+    const choice3 = ref(2);
+
+    return{
+      choice1, choice2, choice3
     }
   }
 }
 </script>
 
 <style scoped>
-
+img{
+  width: 100px;
+  height: 100px;
+}
 </style>
