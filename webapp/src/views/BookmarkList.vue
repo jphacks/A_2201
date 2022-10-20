@@ -1,6 +1,6 @@
 <template>
   <div class="bookmark_list">
-    <h1>「{{ roomName }}」 の部屋へようこそ</h1>
+    <h1>「{{ roomName }}」の部屋へようこそ</h1>
     <table class="table is-fullwidth">
       <tr>
         <th class="has-text-centered">タイトル</th>
