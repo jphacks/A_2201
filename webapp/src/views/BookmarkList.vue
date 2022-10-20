@@ -91,9 +91,11 @@
         </th>
       </tr>
     </table>
-    <button class="button is-small is-primary" >
-      + add bookmark
-    </button>
+    <router-link to="/join/bookmark/add">
+      <button class="button is-small is-primary" >
+        + add bookmark
+      </button>
+    </router-link>
   </div>
 </template>
 

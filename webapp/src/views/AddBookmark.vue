@@ -68,16 +68,16 @@
         </div>
         <div class="field-body">
           <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="3">
-            高い
+            <input type="radio" name="expert" v-model="choice1" value="1">
+            低い
           </label>
           <label class="radio">
             <input type="radio" name="expert" v-model="choice1" value="2">
             普通
           </label>
           <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="1">
-            低い
+            <input type="radio" name="expert" v-model="choice1" value="3">
+            高い
           </label>
         </div>
       </div>
@@ -87,16 +87,16 @@
         </div>
         <div class="field-body">
           <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="3">
-            多い
+            <input type="radio" name="text_length" v-model="choice2" value="1">
+            少ない
           </label>
           <label class="radio">
             <input type="radio" name="text_length" v-model="choice2" value="2">
             普通
           </label>
           <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="1">
-            少ない
+            <input type="radio" name="text_length" v-model="choice2" value="3">
+            多い
           </label>
         </div>
       </div>
@@ -119,9 +119,6 @@
           </label>
         </div>
       </div>
-    </div>
-    <div>
-      <img alt="animal" :src="require('@/assets/'+ choice1 + '-' + choice3 + '-' + choice2 +'.png')">
     </div>
     <div class="field is-horizontal">
       <div class="field-label is-normal">
@@ -146,10 +143,17 @@
         </div>
       </div>
     </div>
+    <div>
+      <p>このブックマークを動物で表すと...</p>
+      <img alt="animal" :src="require('@/assets/'+ choice1 + '-' + choice3 + '-' + choice2 +'.png')">
+      <p>
+        {{ animal_text[choice1-1][choice3-1][choice2-1] }}
+      </p>
+    </div>
+    <router-link to="/join/bookmark">
+      <input class="button is-info" type="button" value="上記の内容でブックマークを登録する" />
+    </router-link>
   </div>
-  <router-link to="/join/bookmark">
-    <input class="button is-info" type="button" value="上記の内容でブックマークを登録する" />
-  </router-link>
 </template>
 
 <script>
@@ -161,9 +165,14 @@ export default {
     const choice1 = ref(2);
     const choice2 = ref(2);
     const choice3 = ref(2);
+    let animal_text = [
+      [["ネズミ", "リス", "シカ"],["クリオネ", "オキアミ", "カニ"],["スズメ", "ハト", "カモ"]],
+      [["ネコ", "イヌ", "キツネ"],["フグ", "イカ", "タコ"],["カモメ", "白鳥", "とんび"]],
+      [["ヘビ", "オオカミ", "クマ"],["アザラシ", "シロクマ", "シャチ"],["フクロウ", "ワシ", "ハヤブサ"]]
+    ]
 
     return{
-      choice1, choice2, choice3
+      choice1, choice2, choice3, animal_text
     }
   }
 }
