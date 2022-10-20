@@ -1,6 +1,6 @@
 <template>
   <div class="bookmark_list">
-    <h1>部屋名</h1>
+    <h1>「{{ roomName }}」 の部屋へようこそ</h1>
     <table class="table is-fullwidth">
       <tr>
         <th class="has-text-centered">タイトル</th>
@@ -106,11 +106,11 @@ export default {
   name: "BookmarkList",
   data() {
     return {
-      room: "",
+      roomName: "",
     }
   },
   mounted() {
-    Api.get('/room',(room) => this.room = room);
+    Api.get('/room',(room) => this.roomName = room[0].fields.name.stringValue);
   }
 }
 </script>
