@@ -2,95 +2,41 @@
   <div class="bookmark_list">
     <h1>「{{ room.name }}」の部屋へようこそ</h1>
     <table class="table is-fullwidth">
-      <tr>
-        <th class="has-text-centered">タイトル</th>
-        <th class="has-text-centered">検索ワード</th>
-        <th class="has-text-centered">アイコン</th>
-        <th class="has-text-centered"></th>
-        <th class="has-text-centered"></th>
-        <th class="has-text-centered"></th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Vue.jsおすすめライブラリ１０選！</th>
-        <th class="has-text-centered">Vue.js ライブラリ 簡単</th>
-        <th class="has-text-centered">🐶</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Vue.jsのすゝめ</th>
-        <th class="has-text-centered">Vue.js ライブラリ 簡単</th>
-        <th class="has-text-centered">🐱</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Vue.jsの開発環境を構築</th>
-        <th class="has-text-centered">Vue.js 始め方</th>
-        <th class="has-text-centered">🦊</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Quarkus 入門</th>
-        <th class="has-text-centered">Quarkus 始め方</th>
-        <th class="has-text-centered">🐠</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
+      <thead>
+        <tr>
+          <th class="has-text-centered">タイトル</th>
+          <th class="has-text-centered">検索ワード</th>
+          <th class="has-text-centered">アイコン</th>
+          <th class="has-text-centered"></th>
+          <th class="has-text-centered"></th>
+          <th class="has-text-centered"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="bookmark in bookmarks" v-bind:key="bookmark.id">
+          <td>{{ bookmark.title }}</td>
+          <td>{{ bookmark.search_word }}</td>
+          <td> <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')"> </td>
+          <td class="has-text-centered">
+            <button class="button is-small is-primary">
+              Info
+            </button>
+          </td>
+          <td class="has-text-centered">
+            <button class="button is-small is-primary">
+              Edit
+            </button>
+          </td>
+          <td class="has-text-centered">
+            <button class="button is-small is-primary" @click="showPopup(title)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
+
     <router-link :to="{ name: 'AddBookmark' }">
       <button class="button is-small is-primary">
         + add bookmark
@@ -112,12 +58,14 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { useRoute } from 'vue-router'
-import { reactive, onMounted, ref } from "vue";
+import {useStore} from "vuex";
+import {useRoute} from 'vue-router'
+import {reactive, onMounted, ref} from "vue";
 
 import db from "../firebase/firestore"
+
 const roomRef = db.collection('room');
+const bookmarkRef = db.collection('bookmark');
 
 export default {
   name: "BookmarkList",
@@ -127,13 +75,23 @@ export default {
     const room = reactive({
       id: '',
       name: ''
-    })
+    });
+    let bookmarks = reactive([]);
 
     onMounted(async () => {
       room.id = route.params.id;
       const roomDoc = await roomRef.doc(room.id).get();
       room.name = roomDoc.data().name;
       await store.dispatch("setRoomName", room.name);
+      await bookmarkRef.where("id", "==", room.id).get()
+          .then(query => {
+            query.forEach(bookmarkDoc => {
+              bookmarks.push(bookmarkDoc.data())
+            })
+          })
+          .catch(() => {
+            console.log("ブックマークの取得に失敗しました!");
+          });
     })
 
     const title = ref("ここにタイトルがはいる");
@@ -163,7 +121,7 @@ export default {
     }
 
     return {
-      room, showPopup, hidePopup, deleteBookMark, title
+      room, bookmarks, showPopup, hidePopup, deleteBookMark, title
     }
   },
 }
