@@ -1,6 +1,7 @@
 <template>
   <div class="add_bookmark">
     <h1>ブックマーク追加</h1>
+
     <p>Step{{stepNumber}}</p>
     <div v-if="stepNumber==1">
     <InputURL/>
@@ -41,6 +42,7 @@ import InputTag from "@/components/InputTag";
 
 export default {
   name: "AddBookmark",
+
   components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL},
 
   setup(){
