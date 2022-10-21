@@ -6,7 +6,13 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <textarea class="textarea" placeholder="このウェブページを訪れた理由を教えてください(100文字以内)"></textarea>
+          <textarea
+            class="textarea"
+            placeholder="このウェブページを訪れた理由を教えてください(100文字以内)"
+            v-model="reason"
+            @change="inputReason"
+          >
+          </textarea>
         </div>
       </div>
     </div>
@@ -14,8 +20,24 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useStore } from "vuex";
+
 export default {
-  name: "InputReason"
+  name: "InputReason",
+  setup() {
+    const store = useStore();
+
+    const reason = ref(store.state.bookmark.reason);
+
+    const inputReason = () => {
+      store.dispatch("inputReason", reason.value);
+    };
+
+    return {
+      reason, inputReason
+    };
+  }
 }
 </script>
 

@@ -6,16 +6,16 @@
       </div>
       <div class="field-body">
         <label class="radio">
-          <input type="radio" name="expert" v-model="choice1" value="3">
-          高い
+          <input type="radio" name="expert" v-model="choice1" value="1" @change="inputChoice">
+          低い
         </label>
         <label class="radio">
-          <input type="radio" name="expert" v-model="choice1" value="2">
+          <input type="radio" name="expert" v-model="choice1" value="2" @change="inputChoice">
           普通
         </label>
         <label class="radio">
-          <input type="radio" name="expert" v-model="choice1" value="1">
-          低い
+          <input type="radio" name="expert" v-model="choice1" value="3" @change="inputChoice">
+          高い
         </label>
       </div>
     </div>
@@ -25,16 +25,16 @@
       </div>
       <div class="field-body">
         <label class="radio">
-          <input type="radio" name="text_length" v-model="choice2" value="3">
-          多い
+          <input type="radio" name="text_length" v-model="choice2" value="1" @change="inputChoice">
+          少ない
         </label>
         <label class="radio">
-          <input type="radio" name="text_length" v-model="choice2" value="2">
+          <input type="radio" name="text_length" v-model="choice2" value="2" @change="inputChoice">
           普通
         </label>
         <label class="radio">
-          <input type="radio" name="text_length" v-model="choice2" value="1">
-          少ない
+          <input type="radio" name="text_length" v-model="choice2" value="3" @change="inputChoice">
+          多い
         </label>
       </div>
     </div>
@@ -44,15 +44,15 @@
       </div>
       <div class="field-body">
         <label class="radio">
-          <input type="radio" name="contents" v-model="choice3" value="3">
+          <input type="radio" name="contents" v-model="choice3" value="3" @change="inputChoice">
           はい
         </label>
         <label class="radio">
-          <input type="radio" name="contents" v-model="choice3" value="2">
+          <input type="radio" name="contents" v-model="choice3" value="2" @change="inputChoice">
           どちらでもない
         </label>
         <label class="radio">
-          <input type="radio" name="contents" v-model="choice3" value="1">
+          <input type="radio" name="contents" v-model="choice3" value="1" @change="inputChoice">
           いいえ
         </label>
       </div>
@@ -64,17 +64,27 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import { ref } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "InputParam",
   setup() {
-    const choice1 = ref(2);
-    const choice2 = ref(2);
-    const choice3 = ref(2);
+    const store = useStore();
+
+    const bookmark = store.state.bookmark;
+
+    const choice1 = ref(parseInt(bookmark.choice[0]));
+    const choice2 = ref(parseInt(bookmark.choice[1]));
+    const choice3 = ref(parseInt(bookmark.choice[2]));
+
+    const inputChoice = () => {
+      const choice = [parseInt(choice1.value), parseInt(choice2.value), parseInt(choice3.value)];
+      store.dispatch("inputChoice", choice);
+    };
 
     return{
-      choice1, choice2, choice3
+      choice1, choice2, choice3, inputChoice
     }
   }
 }
