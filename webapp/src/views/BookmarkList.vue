@@ -91,8 +91,8 @@
         </th>
       </tr>
     </table>
-    <router-link to="/room/:id/add-bookmark">
-      <button class="button is-small is-primary" >
+    <router-link :to="{ name: 'AddBookmark' }">
+      <button class="button is-small is-primary">
         + add bookmark
       </button>
     </router-link>
@@ -112,8 +112,8 @@
 </template>
 
 <script>
-import {useRoute} from 'vue-router'
-import {reactive, onMounted, ref} from "vue";
+import { useRoute } from 'vue-router'
+import { reactive, onMounted, ref } from "vue";
 
 import db from "../firebase/firestore"
 const roomRef = db.collection('room');
