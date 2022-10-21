@@ -11,10 +11,14 @@ export default createStore({
             choice: [2, 2, 2],
             tag: []
         },
+        room_name: "",
     },
     getters: {
         bookmark(state) {
             return state.bookmark;
+        },
+        room_name(state) {
+            return state.room_name;
         }
     },
     mutations: {
@@ -48,6 +52,9 @@ export default createStore({
         inputTag(state, tag) {
             state.bookmark.tag = tag;
         },
+        setRoomName(state, room_name) {
+            state.room_name = room_name;
+        },
     },
     actions: {
         initBookmark({ commit }) {
@@ -73,6 +80,9 @@ export default createStore({
         },
         inputTag({ commit }, tag) {
             commit("inputTag", tag);
+        },
+        setRoomName({ commit }, room_name) {
+            commit("setRoomName", room_name);
         },
     },
     modules: {},
