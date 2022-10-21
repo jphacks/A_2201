@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
 import { useRoute } from 'vue-router'
 import { reactive, onMounted, ref } from "vue";
 
@@ -121,6 +122,7 @@ const roomRef = db.collection('room');
 export default {
   name: "BookmarkList",
   setup() {
+    const store = useStore();
     const route = useRoute();
     const room = reactive({
       id: '',
@@ -131,6 +133,7 @@ export default {
       room.id = route.params.id;
       const roomDoc = await roomRef.doc(room.id).get();
       room.name = roomDoc.data().name;
+      await store.dispatch("setRoomName", room.name);
     })
 
     const title = ref("ここにタイトルがはいる");
