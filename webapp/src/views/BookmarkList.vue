@@ -91,8 +91,8 @@
         </th>
       </tr>
     </table>
-    <router-link to="/join/bookmark/add">
-      <button class="button is-small is-primary">
+    <router-link to="/room/:id/add-bookmark">
+      <button class="button is-small is-primary" >
         + add bookmark
       </button>
     </router-link>
@@ -116,7 +116,6 @@ import {useRoute} from 'vue-router'
 import {reactive, onMounted, ref} from "vue";
 
 import db from "../firebase/firestore"
-
 const roomRef = db.collection('room');
 
 export default {
@@ -128,15 +127,12 @@ export default {
       name: ''
     })
 
-    onMounted(() => {
-      room.name = route.params.id;
-      roomRef.doc(room.name).get()
-          .then(() => {
-            console.log("取得成功")
-          }).catch(() => {
-        console.log("取得失敗")
-      })
+    onMounted(async () => {
+      room.id = route.params.id;
+      const roomDoc = await roomRef.doc(room.id).get();
+      room.name = roomDoc.data().name;
     })
+
     const title = ref("ここにタイトルがはいる");
 
     const showPopup = (title) => {
@@ -150,28 +146,28 @@ export default {
       // スマホでのタッチ操作でのスクロール禁止
       document.addEventListener("touchmove", this.scroll_control, {passive: false});
     }
-    const hidePopup = () =>{
+    const hidePopup = () => {
       let popup = document.getElementsByClassName("popup")[0];
       popup.style.visibility = "hidden";
-      this.delComment=null;
+      this.delComment = null;
       // PCでのスクロール禁止解除
-      document.removeEventListener("mousewheel", this.scroll_control, { passive: false });
+      document.removeEventListener("mousewheel", this.scroll_control, {passive: false});
       // スマホでのタッチ操作でのスクロール禁止解除
-      document.removeEventListener('touchmove', this.scroll_control, { passive: false });
+      document.removeEventListener('touchmove', this.scroll_control, {passive: false});
     }
-    const deleteBookMark = () =>{
+    const deleteBookMark = () => {
       hidePopup();
     }
 
     return {
-      room,showPopup,hidePopup,deleteBookMark,title
+      room, showPopup, hidePopup, deleteBookMark, title
     }
   },
 }
 </script>
 
 <style scoped>
-.popup{
+.popup {
   left: 0;
   top: 0;
   width: 100%;
@@ -184,7 +180,7 @@ export default {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   width: 80%;
   max-width: 600px;
   padding: 50px;
@@ -192,13 +188,14 @@ export default {
   z-index: 2;
   text-align: center;
 }
+
 .black-background {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,.8);
+  background-color: rgba(0, 0, 0, .8);
   z-index: 1;
   cursor: pointer;
 }
