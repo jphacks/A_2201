@@ -25,7 +25,7 @@
           </button>
         </th>
         <th class="has-text-centered">
-          <button class="button is-small is-primary">
+          <button class="button is-small is-primary" @click="showPopup(title)">
             Delete
           </button>
         </th>
@@ -45,7 +45,7 @@
           </button>
         </th>
         <th class="has-text-centered">
-          <button class="button is-small is-primary">
+          <button class="button is-small is-primary" @click="showPopup(title)">
             Delete
           </button>
         </th>
@@ -65,7 +65,7 @@
           </button>
         </th>
         <th class="has-text-centered">
-          <button class="button is-small is-primary">
+          <button class="button is-small is-primary" @click="showPopup(title)">
             Delete
           </button>
         </th>
@@ -85,7 +85,7 @@
           </button>
         </th>
         <th class="has-text-centered">
-          <button class="button is-small is-primary">
+          <button class="button is-small is-primary" @click="showPopup(title)">
             Delete
           </button>
         </th>
@@ -97,11 +97,23 @@
       </button>
     </router-link>
   </div>
+  <div class="popup">
+    <div class="popup-inner">
+      <p>登録したブックマークを削除します。よろしいですか？</p>
+      <button class="button is-small is-primary" @click="deleteBookMark" style="background-color: red;">
+        削除する
+      </button>
+      <button class="button is-small is-primary" @click="hidePopup">
+        キャンセル
+      </button>
+    </div>
+    <div class="black-background"></div>
+  </div>
 </template>
 
 <script>
 import Api from '../Api';
-import {reactive, onMounted} from "vue";
+import {reactive, onMounted, ref} from "vue";
 
 export default {
   name: "BookmarkList",
@@ -118,16 +130,71 @@ export default {
         room.updateTime = _room[0].updateTime
       })
     })
+    const title = ref("ここにタイトルがはいる");
+
+    const showPopup = (title) => {
+      let popup = document.getElementsByClassName("popup")[0];
+      popup.style.visibility = "visible";
+      let p = popup.getElementsByTagName("p")[0];
+      p.innerText = "登録されたブックマークを削除します。よろしいですか?\n\"" + title + "\"";
+      this.delComment = title;
+      // PCでのスクロール禁止
+      document.addEventListener("mousewheel", this.scroll_control, {passive: false});
+      // スマホでのタッチ操作でのスクロール禁止
+      document.addEventListener("touchmove", this.scroll_control, {passive: false});
+    }
+    const hidePopup = () =>{
+      let popup = document.getElementsByClassName("popup")[0];
+      popup.style.visibility = "hidden";
+      this.delComment=null;
+      // PCでのスクロール禁止解除
+      document.removeEventListener("mousewheel", this.scroll_control, { passive: false });
+      // スマホでのタッチ操作でのスクロール禁止解除
+      document.removeEventListener('touchmove', this.scroll_control, { passive: false });
+    }
+    const deleteBookMark = () =>{
+      hidePopup();
+    }
 
     return {
-      room
+      room,showPopup,hidePopup,deleteBookMark,title
     }
   },
 }
 </script>
 
 <style scoped>
+.popup{
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  visibility: hidden;
+}
 
+.popup-inner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 80%;
+  max-width: 600px;
+  padding: 50px;
+  background-color: #fff;
+  z-index: 2;
+  text-align: center;
+}
+.black-background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,.8);
+  z-index: 1;
+  cursor: pointer;
+}
 </style>
 
 
