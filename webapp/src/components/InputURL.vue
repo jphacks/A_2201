@@ -39,6 +39,15 @@ export default {
 
     const inputUrl = () => {
       store.dispatch("inputUrl", url.value);
+      console.log(document.URL);
+
+      let url_info;
+      try {
+        url_info = new URL(url.value);
+        console.log(url_info);
+      } catch(e) {
+        console.log(e);
+      }
     };
 
     const inputTitle = () => {
