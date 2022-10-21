@@ -28,6 +28,28 @@ const get = async (_url, callback) => {
         })
 }
 
+const getById = async (_url, id, callback) => {
+    const url = baseUrl + _url;
+    axios.get(url)
+        .then(res => {
+            const document = res.data;
+            // ***************************************
+            // ***********レスポンスの整形箇所***********
+            // ***************************************
+            const eraseUrl = 'projects/team-bookmark-41340/databases/(default)/documents'
+            const obj = {
+                id: document.name.replace(eraseUrl + _url + '/', ''),
+                fields: document.fields,
+                updateTime: document.updateTime
+            }
+            callback(obj);
+        })
+        .catch(error => {
+            console.log('ERROR in GET API');
+            console.log(error);
+        })
+}
+
 const post = async (_url, obj) => {
     const url = baseUrl + _url;
     axios.post(url, obj)
@@ -40,4 +62,4 @@ const post = async (_url, obj) => {
         })
 }
 
-export default {get, post}
+export default {get, getById, post}

@@ -23,14 +23,16 @@ const routes = [
         component: () => import("../views/JoinRoom.vue"),
     },
     {
-        path: "/join/bookmark",
+        path: "/room/:id",
         name: "BookmarkList",
         component: () => import("../views/BookmarkList.vue"),
+        props: true
     },
     {
-        path: "/join/bookmark/add",
+        path: "/room/:id/add-bookmark",
         name: "AddBookmark",
         component: () => import("../views/AddBookmark.vue"),
+        props: true
     },
 ];
 

@@ -8,11 +8,9 @@
           <input class="input" type="text" placeholder="作成したい部屋の名前を入力してください" v-model="room.name">
         </div>
         <div class="control">
-          <router-link to="/join/bookmark">
-            <a class="button is-info" @click="addRoom">
-              作成
-            </a>
-          </router-link>
+          <a class="button is-info" @click="addRoom">
+            作成
+          </a>
         </div>
       </div>
     </div>
@@ -22,26 +20,30 @@
 
 <script>
 import {reactive} from "vue";
-import Api from "@/Api";
+import {useRouter} from "vue-router"
+
+import db from "../firebase/firestore"
+const roomRef = db.collection('room');
 
 export default {
   name: "CreateRoom",
   setup() {
+    const router = useRouter();
     const room = reactive({
-      id: '',
+      id: '1',
       name: ''
     })
 
     const addRoom = () => {
-      Api.post('/room',
-          {
-            fields: {
-              name: {
-                stringValue: room.name
-              }
-            }
-          }
-      )
+      roomRef.doc(room.name).set({
+        name: room.name
+      }).then(() =>{
+        console.log("ルーム「" + room.name + "」の作成に成功しました！");
+      }).catch(() => {
+        console.log("エラー！！！")
+        console.log("ルーム「" + room.name + "」の作成に失敗しました！");
+      })
+      router.push({path: `/room/${room.name}`})
     }
     return {
       room,

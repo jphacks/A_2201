@@ -2,9 +2,7 @@
   <router-link to="/">Home</router-link> |
   <router-link to="/about">About</router-link> |
   <router-link to="/create">Create</router-link> |
-  <router-link to="/join">Join</router-link> |
-  <router-link to="/join/bookmark">Bookmark</router-link> |
-  <router-link to="/join/bookmark/add">AddBookmark</router-link>
+  <router-link to="/join">Join</router-link>
   <router-view/>
 </template>
 
