@@ -38,7 +38,7 @@
           <CheckInput class="content" />
         </section>
         <footer class="modal-card-foot">
-          <router-link to="/join/bookmark">
+          <router-link :to="{ name: 'BookmarkList' }">
             <input class="button is-success" type="button" value="登録する" @click="postBookmark" />
           </router-link>
           <button class="button" @click="modalAction">戻る</button>
@@ -57,10 +57,13 @@ import InputParam from "@/components/InputParam";
 import InputAbstract from "@/components/InputAbstract";
 import InputReason from "@/components/InputReason";
 import CheckInput from "@/components/CheckInput";
-import { ref, onUnmounted, reactive } from "vue";
+import { ref, onMounted, onUnmounted, reactive } from "vue";
 import InputTag from "@/components/InputTag";
 import { useStore } from "vuex";
-//import Api from '../Api';
+import db from "../firebase/firestore";
+
+const roomRef = db.collection('room');
+const bookmarkRef = db.collection('bookmark');
 
 export default {
   name: "AddBookmark",
@@ -69,6 +72,10 @@ export default {
 
   setup(){
     const store = useStore();
+    const room = reactive({
+      id: '',
+      name: ''
+    })
 
     const modal_flag = ref(false);
 
@@ -88,7 +95,9 @@ export default {
 
     const postBookmark = () => {
       const bookmark = store.getters.bookmark;
-      const obj = reactive({
+
+      bookmarkRef.doc(bookmark.title).set({
+        id: room.name,
         url: bookmark.url,
         title: bookmark.title,
         search_word: bookmark.search_word,
@@ -96,10 +105,23 @@ export default {
         reason: bookmark.reason,
         choice: bookmark.choice,
         tag: bookmark.tag
+      }).then(() =>{
+        console.log("ブックマーク「" + bookmark.title + "」の作成に成功しました！");
+      }).catch(() => {
+        console.log("エラー！！！")
+        console.log("ブックマーク「" + bookmark.title + "」の作成に失敗しました！");
       })
-      console.log(obj);
-      //Api.post('/bookmark', obj);
     }
+
+    onMounted(() => {
+      room.name = store.getters.room_name;
+      roomRef.doc(room.name).get()
+          .then(() => {
+            console.log("取得成功")
+          }).catch(() => {
+        console.log("取得失敗")
+      })
+    })
 
     onUnmounted(() => {
       console.log("unmounted");
