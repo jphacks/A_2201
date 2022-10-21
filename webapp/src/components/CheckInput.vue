@@ -3,23 +3,23 @@
     <table class="table">
       <tr>
         <th>URL</th>
-        <td>{{ bookmark.url=="" ? "(Empty)" : bookmark.url }}</td>
+        <td>{{ bookmark.url=="" ? "なし" : bookmark.url }}</td>
       </tr>
       <tr>
         <th>タイトル</th>
-        <td>{{ bookmark.title=="" ? "(Empty)" : bookmark.title }}</td>
+        <td>{{ bookmark.title=="" ? "なし" : bookmark.title }}</td>
       </tr>
       <tr>
         <th>検索ワード</th>
-        <td>{{ bookmark.search_word=="" ? "(Empty)" : bookmark.search_word }}</td>
+        <td>{{ bookmark.search_word=="" ? "なし" : bookmark.search_word }}</td>
       </tr>
       <tr>
         <th>説明</th>
-        <td>{{ bookmark.summary=="" ? "(Empty)" : bookmark.summary }}</td>
+        <td>{{ bookmark.summary=="" ? "なし" : bookmark.summary }}</td>
       </tr>
       <tr>
         <th>理由</th>
-        <td>{{ bookmark.reason=="" ? "(Empty)" : bookmark.reason}}</td>
+        <td>{{ bookmark.reason=="" ? "なし" : bookmark.reason}}</td>
       </tr>
       <tr>
         <th>評価</th>
@@ -29,7 +29,7 @@
       </tr>
       <tr>
         <th>タグ</th>
-        <td>{{ bookmark.tag }}</td>
+        <td>{{ bookmark.tag.length==0 ? "なし" : bookmark.tag }}</td>
       </tr>
     </table>
   </div>

@@ -39,7 +39,7 @@
         </section>
         <footer class="modal-card-foot">
           <router-link to="/join/bookmark">
-            <input class="button is-success" type="button" value="登録する" />
+            <input class="button is-success" type="button" value="登録する" @click="postBookmark" />
           </router-link>
           <button class="button" @click="modalAction">戻る</button>
         </footer>
@@ -57,9 +57,10 @@ import InputParam from "@/components/InputParam";
 import InputAbstract from "@/components/InputAbstract";
 import InputReason from "@/components/InputReason";
 import CheckInput from "@/components/CheckInput";
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, reactive } from "vue";
 import InputTag from "@/components/InputTag";
 import { useStore } from "vuex";
+//import Api from '../Api';
 
 export default {
   name: "AddBookmark",
@@ -85,6 +86,21 @@ export default {
       modal_flag.value = !modal_flag.value;
     }
 
+    const postBookmark = () => {
+      const bookmark = store.getters.bookmark;
+      const obj = reactive({
+        url: bookmark.url,
+        title: bookmark.title,
+        search_word: bookmark.search_word,
+        summary: bookmark.summary,
+        reason: bookmark.reason,
+        choice: bookmark.choice,
+        tag: bookmark.tag
+      })
+      console.log(obj);
+      //Api.post('/bookmark', obj);
+    }
+
     onUnmounted(() => {
       console.log("unmounted");
       store.dispatch("initBookmark");
@@ -95,7 +111,8 @@ export default {
       backStep,
       nextStep,
       modal_flag,
-      modalAction
+      modalAction,
+      postBookmark
     }
   },
 
