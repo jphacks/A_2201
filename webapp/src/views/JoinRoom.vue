@@ -5,14 +5,12 @@
     <div class="container is-max-desktop">
       <div class="field has-addons">
         <div class="control is-expanded">
-          <input class="input" type="text" placeholder="参加したい部屋の名前を入力してください">
+          <input class="input" type="text" placeholder="参加したい部屋の名前を入力してください" v-model="room.name">
         </div>
         <div class="control">
-          <router-link to="/join/bookmark">
-            <a class="button is-info">
-              参加する！
-            </a>
-          </router-link>
+          <a class="button is-info" @click="joinRoom">
+            参加する！
+          </a>
         </div>
       </div>
     </div>
@@ -21,8 +19,34 @@
 </template>
 
 <script>
+import {reactive} from "vue";
+import {useRouter} from "vue-router"
+
+import db from "../firebase/firestore"
+
+const roomRef = db.collection('room');
+
 export default {
-  name: "JoinRoom"
+  name: "JoinRoom",
+  setup() {
+    const router = useRouter();
+    const room = reactive({
+      name: ''
+    })
+
+    const joinRoom = async () => {
+      const roomDoc = await roomRef.where("name", "==", room.name).get();
+      if (roomDoc.docs.length !== 0)
+        router.push({path: `/room/${roomDoc.docs[0].id}`});
+      else
+        console.log("部屋がありません");
+    }
+
+    return {
+      room,
+      joinRoom
+    }
+  },
 }
 </script>
 
