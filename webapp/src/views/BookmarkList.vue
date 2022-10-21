@@ -112,22 +112,29 @@
 </template>
 
 <script>
-import Api from '../Api';
+import {useRoute} from 'vue-router'
 import {reactive, onMounted, ref} from "vue";
+
+import db from "../firebase/firestore"
+
+const roomRef = db.collection('room');
 
 export default {
   name: "BookmarkList",
   setup() {
+    const route = useRoute();
     const room = reactive({
       id: '',
       name: ''
     })
 
     onMounted(() => {
-      Api.get('/room', (_room) => {
-        room.id = _room[0].id;
-        room.name = _room[0].fields.name.stringValue;
-        room.updateTime = _room[0].updateTime
+      room.name = route.params.id;
+      roomRef.doc(room.name).get()
+          .then(() => {
+            console.log("取得成功")
+          }).catch(() => {
+        console.log("取得失敗")
       })
     })
     const title = ref("ここにタイトルがはいる");
