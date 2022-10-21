@@ -24,9 +24,29 @@
     <button v-if="stepNumber!=1" class="button is-info" type="button" @click="backStep" >Back</button>
     <button v-if="stepNumber!=6" class="button is-info" type="button" @click="nextStep" >Next</button>
   </div>
-  <router-link v-if="stepNumber==6" to="/join/bookmark">
-    <input class="button is-info" type="button" value="上記の内容でブックマークを登録する" />
-  </router-link>
+  <div v-if="stepNumber==6">
+    <input class="button is-info" type="button" value="ブックマークを登録する" @click="modalAction"/>
+    <!-- ここからモーダルウィンドウ -->
+    <div :class="modal_flag ? 'modal is-active': 'modal'">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">以下の内容で登録しますか？</p>
+          <button class="delete" aria-label="close" @click="modalAction"></button>
+        </header>
+        <section class="modal-card-body">
+          <CheckInput class="content" />
+        </section>
+        <footer class="modal-card-foot">
+          <router-link to="/join/bookmark">
+            <input class="button is-success" type="button" value="登録する" @click="postBookmark" />
+          </router-link>
+          <button class="button" @click="modalAction">戻る</button>
+        </footer>
+      </div>
+    </div>
+    <!-- ここまでモーダルウィンドウ -->
+  </div>
 </template>
 
 <script>
@@ -36,24 +56,64 @@ import InputSearchWords from "@/components/InputSearchWords";
 import InputParam from "@/components/InputParam";
 import InputAbstract from "@/components/InputAbstract";
 import InputReason from "@/components/InputReason";
-import {ref} from "vue";
+import CheckInput from "@/components/CheckInput";
+import { ref, onUnmounted, reactive } from "vue";
 import InputTag from "@/components/InputTag";
-
+import { useStore } from "vuex";
+//import Api from '../Api';
 
 export default {
   name: "AddBookmark",
 
-  components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL},
+  components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL, CheckInput},
 
   setup(){
+    const store = useStore();
+
+    const modal_flag = ref(false);
+
     const stepNumber = ref(1);
     const backStep =() =>{
       stepNumber.value--;
+      console.log(store.getters.bookmark);
     }
     const nextStep =() =>{
       stepNumber.value++;
+      console.log(store.getters.bookmark);
     }
-    return{stepNumber,backStep,nextStep}
+
+    const modalAction = () => {
+      modal_flag.value = !modal_flag.value;
+    }
+
+    const postBookmark = () => {
+      const bookmark = store.getters.bookmark;
+      const obj = reactive({
+        url: bookmark.url,
+        title: bookmark.title,
+        search_word: bookmark.search_word,
+        summary: bookmark.summary,
+        reason: bookmark.reason,
+        choice: bookmark.choice,
+        tag: bookmark.tag
+      })
+      console.log(obj);
+      //Api.post('/bookmark', obj);
+    }
+
+    onUnmounted(() => {
+      console.log("unmounted");
+      store.dispatch("initBookmark");
+    })
+
+    return{
+      stepNumber,
+      backStep,
+      nextStep,
+      modal_flag,
+      modalAction,
+      postBookmark
+    }
   },
 
 }
