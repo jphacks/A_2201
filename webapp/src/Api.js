@@ -23,9 +23,21 @@ const get = async (_url, callback) => {
             callback(array);
         })
         .catch(error => {
-            console.log('ERROR in API');
+            console.log('ERROR in GET API');
             console.log(error);
         })
 }
 
-export default {get}
+const post = async (_url, obj) => {
+    const url = baseUrl + _url;
+    axios.post(url, obj)
+        .then(res => {
+            console.log(res);
+        })
+        .catch(error => {
+            console.log('ERROR in POST API');
+            console.log(error);
+        })
+}
+
+export default {get, post}

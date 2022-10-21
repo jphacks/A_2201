@@ -1,186 +1,124 @@
 <template>
   <div class="add_bookmark">
     <h1>ブックマーク追加</h1>
-    <div class="container is-max-desktop">
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">URL</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input class="input" type="text" placeholder="https://...">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">ブックマーク名</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input class="input" type="text" placeholder="ウェブページの名前を入力してください">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">検索ワード</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input class="input" type="text" placeholder="ウェブページを見つけた時に入力した検索ワードを教えてください">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">要約</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <textarea class="textarea" placeholder="このブックマークについて簡単に説明してみてください(100文字以内)"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">理由</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <textarea class="textarea" placeholder="このウェブページを訪れた理由を教えてください(100文字以内)"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">専門性はどう感じましたか？</label>
-        </div>
-        <div class="field-body">
-          <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="1">
-            低い
-          </label>
-          <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="2">
-            普通
-          </label>
-          <label class="radio">
-            <input type="radio" name="expert" v-model="choice1" value="3">
-            高い
-          </label>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">文章量はどうでしたか？</label>
-        </div>
-        <div class="field-body">
-          <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="1">
-            少ない
-          </label>
-          <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="2">
-            普通
-          </label>
-          <label class="radio">
-            <input type="radio" name="text_length" v-model="choice2" value="3">
-            多い
-          </label>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">内容は分かりやすかったですか？</label>
-        </div>
-        <div class="field-body">
-          <label class="radio">
-            <input type="radio" name="contents" v-model="choice3" value="3">
-            はい
-          </label>
-          <label class="radio">
-            <input type="radio" name="contents" v-model="choice3" value="2">
-            どちらでもない
-          </label>
-          <label class="radio">
-            <input type="radio" name="contents" v-model="choice3" value="1">
-            いいえ
-          </label>
-        </div>
+
+    <p>Step{{stepNumber}}</p>
+    <div v-if="stepNumber==1">
+    <InputURL/>
+    </div>
+    <div v-if="stepNumber==2">
+    <InputSearchWords/>
+    </div>
+    <div v-if="stepNumber==3">
+    <InputAbstract/>
+    </div>
+    <div v-if="stepNumber==4">
+    <InputReason/>
+    </div>
+    <div v-if="stepNumber==5">
+    <InputParam/>
+    </div>
+    <div v-if="stepNumber==6">
+    <InputTag/>
+    </div>
+    <button v-if="stepNumber!=1" class="button is-info" type="button" @click="backStep" >Back</button>
+    <button v-if="stepNumber!=6" class="button is-info" type="button" @click="nextStep" >Next</button>
+  </div>
+  <div v-if="stepNumber==6">
+    <input class="button is-info" type="button" value="ブックマークを登録する" @click="modalAction"/>
+    <!-- ここからモーダルウィンドウ -->
+    <div :class="modal_flag ? 'modal is-active': 'modal'">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">以下の内容で登録しますか？</p>
+          <button class="delete" aria-label="close" @click="modalAction"></button>
+        </header>
+        <section class="modal-card-body">
+          <CheckInput class="content" />
+        </section>
+        <footer class="modal-card-foot">
+          <router-link to="/join/bookmark">
+            <input class="button is-success" type="button" value="登録する" @click="postBookmark" />
+          </router-link>
+          <button class="button" @click="modalAction">戻る</button>
+        </footer>
       </div>
     </div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label">タグ</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox">
-              仕事
-            </label>
-            <label class="checkbox">
-              <input type="checkbox">
-              趣味
-            </label>
-            <label class="checkbox">
-              <input type="checkbox">
-              学習
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <p>このブックマークを動物で表すと...</p>
-      <img alt="animal" :src="require('@/assets/'+ choice1 + '-' + choice3 + '-' + choice2 +'.png')">
-      <p>
-        {{ animal_text[choice1-1][choice3-1][choice2-1] }}
-      </p>
-    </div>
-    <router-link to="/join/bookmark">
-      <input class="button is-info" type="button" value="上記の内容でブックマークを登録する" />
-    </router-link>
+    <!-- ここまでモーダルウィンドウ -->
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+
+import InputURL from "@/components/InputURL";
+import InputSearchWords from "@/components/InputSearchWords";
+import InputParam from "@/components/InputParam";
+import InputAbstract from "@/components/InputAbstract";
+import InputReason from "@/components/InputReason";
+import CheckInput from "@/components/CheckInput";
+import { ref, onUnmounted, reactive } from "vue";
+import InputTag from "@/components/InputTag";
+import { useStore } from "vuex";
+//import Api from '../Api';
 
 export default {
   name: "AddBookmark",
-  setup() {
-    const choice1 = ref(2);
-    const choice2 = ref(2);
-    const choice3 = ref(2);
-    let animal_text = [
-      [["ネズミ", "リス", "シカ"],["クリオネ", "オキアミ", "カニ"],["スズメ", "ハト", "カモ"]],
-      [["ネコ", "イヌ", "キツネ"],["フグ", "イカ", "タコ"],["カモメ", "白鳥", "とんび"]],
-      [["ヘビ", "オオカミ", "クマ"],["アザラシ", "シロクマ", "シャチ"],["フクロウ", "ワシ", "ハヤブサ"]]
-    ]
+
+  components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL, CheckInput},
+
+  setup(){
+    const store = useStore();
+
+    const modal_flag = ref(false);
+
+    const stepNumber = ref(1);
+    const backStep =() =>{
+      stepNumber.value--;
+      console.log(store.getters.bookmark);
+    }
+    const nextStep =() =>{
+      stepNumber.value++;
+      console.log(store.getters.bookmark);
+    }
+
+    const modalAction = () => {
+      modal_flag.value = !modal_flag.value;
+    }
+
+    const postBookmark = () => {
+      const bookmark = store.getters.bookmark;
+      const obj = reactive({
+        url: bookmark.url,
+        title: bookmark.title,
+        search_word: bookmark.search_word,
+        summary: bookmark.summary,
+        reason: bookmark.reason,
+        choice: bookmark.choice,
+        tag: bookmark.tag
+      })
+      console.log(obj);
+      //Api.post('/bookmark', obj);
+    }
+
+    onUnmounted(() => {
+      console.log("unmounted");
+      store.dispatch("initBookmark");
+    })
 
     return{
-      choice1, choice2, choice3, animal_text
+      stepNumber,
+      backStep,
+      nextStep,
+      modal_flag,
+      modalAction,
+      postBookmark
     }
-  }
+  },
+
 }
 </script>
 
 <style scoped>
-img{
-  width: 100px;
-  height: 100px;
-}
+
 </style>
