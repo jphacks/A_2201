@@ -14,7 +14,6 @@
         </div>
       </div>
     </div>
-    <p>エラー文はここ</p>
   </div>
 </template>
 
@@ -35,10 +34,15 @@ export default {
     })
 
     const joinRoom = async () => {
+      if(room.name === "") {
+        alert("※部屋名を入力してください");
+        return;
+      }
       const roomDoc = await roomRef.where("name", "==", room.name).get();
       if (roomDoc.docs.length !== 0)
         router.push({path: `/room/${roomDoc.docs[0].id}`});
       else
+        alert("ルーム「" + room.name + "」はありません");
         console.log("部屋がありません");
     }
 

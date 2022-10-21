@@ -14,12 +14,14 @@
         </div>
       </div>
     </div>
-    <p>エラー文はここ</p>
+    <div v-show="isExistRoom">
+      <p>その部屋はありません！</p>
+    </div>
   </div>
 </template>
 
 <script>
-import {reactive} from "vue";
+import {ref, reactive} from "vue";
 import {useRouter} from "vue-router"
 
 import db from "../firebase/firestore"
@@ -31,17 +33,23 @@ export default {
   name: "CreateRoom",
   setup() {
     const router = useRouter();
+    let isExistRoom = ref(false);
     const room = reactive({
       id: '1',
       name: ''
     })
 
     const addRoom = async () => {
+      if(room.name === "") {
+        alert("※部屋名を入力してください");
+        return;
+      }
       await roomRef.where("name", "==", room.name).get()
           .then(query => {
             console.log(query);
             if (query.docs.length !== 0) {
-              console.log("既にその部屋はあります！");
+              isExistRoom = true;
+              alert("※既にその部屋はあります");
             } else {
               _roomRef.add({name: room.name})
                   .then(res => {
@@ -60,6 +68,7 @@ export default {
 
     return {
       room,
+      isExistRoom,
       addRoom
     }
   },
