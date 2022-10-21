@@ -91,7 +91,7 @@
         </th>
       </tr>
     </table>
-    <router-link to="/join/bookmark/add">
+    <router-link :to="{ name: 'AddBookmark' }">
       <button class="button is-small is-primary">
         + add bookmark
       </button>
@@ -112,8 +112,9 @@
 </template>
 
 <script>
-import {useRoute} from 'vue-router'
-import {reactive, onMounted, ref} from "vue";
+import { useStore } from "vuex";
+import { useRoute } from 'vue-router'
+import { reactive, onMounted, ref } from "vue";
 
 import db from "../firebase/firestore"
 
@@ -122,6 +123,7 @@ const roomRef = db.collection('room');
 export default {
   name: "BookmarkList",
   setup() {
+    const store = useStore();
     const route = useRoute();
     const room = reactive({
       id: '',
@@ -133,6 +135,7 @@ export default {
       roomRef.doc(room.name).get()
           .then(() => {
             console.log("取得成功")
+            store.dispatch("setRoomName", room.name);
           }).catch(() => {
         console.log("取得失敗")
       })
