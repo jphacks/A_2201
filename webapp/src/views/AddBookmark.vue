@@ -36,9 +36,9 @@ import InputSearchWords from "@/components/InputSearchWords";
 import InputParam from "@/components/InputParam";
 import InputAbstract from "@/components/InputAbstract";
 import InputReason from "@/components/InputReason";
-import {ref} from "vue";
+import { ref, onUnmounted } from "vue";
 import InputTag from "@/components/InputTag";
-
+import { useStore } from "vuex";
 
 export default {
   name: "AddBookmark",
@@ -46,13 +46,23 @@ export default {
   components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL},
 
   setup(){
+    const store = useStore();
+
     const stepNumber = ref(1);
     const backStep =() =>{
       stepNumber.value--;
+      console.log(store.getters.bookmark);
     }
     const nextStep =() =>{
       stepNumber.value++;
+      console.log(store.getters.bookmark);
     }
+
+    onUnmounted(() => {
+      console.log("unmounted");
+      store.dispatch("initBookmark");
+    })
+
     return{stepNumber,backStep,nextStep}
   },
 
