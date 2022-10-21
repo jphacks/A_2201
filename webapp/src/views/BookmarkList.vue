@@ -114,7 +114,7 @@ export default {
     onMounted(() => {
       Api.get('/room', (_room) => {
         room.id = _room[0].id;
-        room.name = _room[0].fields.name.stringValue,
+        room.name = _room[0].fields.name.stringValue;
         room.updateTime = _room[0].updateTime
       })
     })
