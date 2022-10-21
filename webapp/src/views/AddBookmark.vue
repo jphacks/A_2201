@@ -1,30 +1,41 @@
 <template>
+
   <div class="add_bookmark">
     <h1>ブックマーク追加</h1>
 
-    <p>Step{{stepNumber}}</p>
-    <div v-if="stepNumber==1">
+  <div>
+    <step-progress :steps="[
+        'Information',
+        'Search Word',
+        'Summary',
+        'Reason',
+        'Evaluation',
+        'Tag',
+    ]" :current-step="currentStep" icon-class="fa-solid fa-check" active-color='blue' lineThickness=5>
+    </step-progress>
+  </div>
+    <div v-if="currentStep==0">
     <InputURL/>
     </div>
-    <div v-if="stepNumber==2">
+    <div v-if="currentStep==1">
     <InputSearchWords/>
     </div>
-    <div v-if="stepNumber==3">
+    <div v-if="currentStep==2">
     <InputAbstract/>
     </div>
-    <div v-if="stepNumber==4">
+    <div v-if="currentStep==3">
     <InputReason/>
     </div>
-    <div v-if="stepNumber==5">
+    <div v-if="currentStep==4">
     <InputParam/>
     </div>
-    <div v-if="stepNumber==6">
+    <div v-if="currentStep==5">
     <InputTag/>
     </div>
-    <button v-if="stepNumber!=1" class="button is-info" type="button" @click="backStep" >Back</button>
-    <button v-if="stepNumber!=6" class="button is-info" type="button" @click="nextStep" >Next</button>
+    <button v-if="currentStep!=0" class="button is-info" type="button" @click="currentStep--" >Back</button>
+    <button v-if="currentStep!=5" class="button is-info" type="button" @click="currentStep++" >Next</button>
   </div>
-  <router-link v-if="stepNumber==6" to="/join/bookmark">
+  <router-link v-if="currentStep==5" to="/join/bookmark">
     <input class="button is-info" type="button" value="上記の内容でブックマークを登録する" />
   </router-link>
 </template>
@@ -36,7 +47,6 @@ import InputSearchWords from "@/components/InputSearchWords";
 import InputParam from "@/components/InputParam";
 import InputAbstract from "@/components/InputAbstract";
 import InputReason from "@/components/InputReason";
-import {ref} from "vue";
 import InputTag from "@/components/InputTag";
 
 
@@ -44,18 +54,11 @@ export default {
   name: "AddBookmark",
 
   components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL},
-
-  setup(){
-    const stepNumber = ref(1);
-    const backStep =() =>{
-      stepNumber.value--;
+  data() {
+    return {
+      currentStep: 0,
     }
-    const nextStep =() =>{
-      stepNumber.value++;
-    }
-    return{stepNumber,backStep,nextStep}
   },
-
 }
 </script>
 
