@@ -34,7 +34,7 @@
       class="button is-info"
       type="button"
       @click="nextStep"
-      :disabled="!store.getters.is_valid_url"
+      :disabled="!store.getters.is_valid_url || !store.getters.is_valid_title"
     >
       次へ
     </button>
