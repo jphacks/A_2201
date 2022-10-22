@@ -38,9 +38,11 @@ export default {
     const url = ref(store.state.bookmark.url);
     const title = ref(store.state.bookmark.title);
 
+    store.dispatch("setInvalidUrl");
+    store.dispatch("setInvalidTitle");
+    
     const inputUrl = () => {
       store.dispatch("inputUrl", url.value);
-      store.dispatch("setInvalidUrl");
 
       let url_info;
       try {
@@ -55,7 +57,6 @@ export default {
 
     const inputTitle = () => {
       store.dispatch("inputTitle", title.value);
-      store.dispatch("setInvalidTitle");
 
       title.value != "" ? store.dispatch("setValidTitle"): store.dispatch("setInvalidTitle");
     };
