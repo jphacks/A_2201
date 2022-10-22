@@ -101,7 +101,7 @@ export default {
       room.id = route.params.id;
       const roomDoc = await roomRef.doc(room.id).get();
       room.name = roomDoc.data().name;
-      await store.dispatch("setRoomName", room.name);
+      await store.dispatch("setRoomId", room.id);
       await bookmarkRef.where("id", "==", room.id).get()
           .then(query => {
             query.forEach(bookmarkDoc => {
