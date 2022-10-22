@@ -50,7 +50,7 @@
             </button>
           </td>
           <td class="has-text-centered">
-            <button class="button is-small is-primary" @click="showPopup(title)">
+            <button class="button is-small is-primary" @click="showPopup(index)">
               削除
             </button>
           </td>
@@ -96,6 +96,7 @@ export default {
       name: ''
     });
     let bookmarks = reactive([]);
+    let delBookmarkTitle = ref(null);
 
     onMounted(async () => {
       room.id = route.params.id;
@@ -117,27 +118,35 @@ export default {
 
     const title = ref("ここにタイトルがはいる");
 
-    const showPopup = (title) => {
+    const showPopup = (index) => {
+      delBookmarkTitle.value = bookmarks[index].title;
       let popup = document.getElementsByClassName("popup")[0];
       popup.style.visibility = "visible";
       let p = popup.getElementsByTagName("p")[0];
-      p.innerText = "登録されたブックマークを削除します。よろしいですか?\n\"" + title + "\"";
-      //this.delComment = title;
+      p.innerText = "登録されたブックマークを削除します。よろしいですか?\n\"" + delBookmarkTitle.value + "\"";
       // PCでのスクロール禁止
       //document.addEventListener("mousewheel", this.scroll_control, {passive: false});
       // スマホでのタッチ操作でのスクロール禁止
       //document.addEventListener("touchmove", this.scroll_control, {passive: false});
     }
+
     const hidePopup = () => {
+      delBookmarkTitle.value = '';
       let popup = document.getElementsByClassName("popup")[0];
       popup.style.visibility = "hidden";
-      //this.delComment = null;
       // PCでのスクロール禁止解除
       //document.removeEventListener("mousewheel", this.scroll_control, {passive: false});
       // スマホでのタッチ操作でのスクロール禁止解除
       //document.removeEventListener('touchmove', this.scroll_control, {passive: false});
     }
+
     const deleteBookMark = () => {
+      bookmarkRef.doc(delBookmarkTitle.value).delete()
+          .then(() => {
+            document.location.reload();
+          }).catch(error => {
+        console.log(error)
+      })
       hidePopup();
     }
 
