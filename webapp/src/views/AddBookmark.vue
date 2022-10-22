@@ -4,22 +4,22 @@
 
     <p>Step{{stepNumber}}</p>
     <div v-if="stepNumber==1">
-    <InputURL/>
+      <InputURL/>
     </div>
     <div v-if="stepNumber==2">
-    <InputSearchWords/>
+      <InputSearchWords/>
     </div>
     <div v-if="stepNumber==3">
-    <InputAbstract/>
+      <InputAbstract/>
     </div>
     <div v-if="stepNumber==4">
-    <InputReason/>
+      <InputReason/>
     </div>
     <div v-if="stepNumber==5">
-    <InputParam/>
+      <InputParam/>
     </div>
     <div v-if="stepNumber==6">
-    <InputTag/>
+      <InputTag/>
     </div>
     <button v-if="stepNumber!=1" class="button is-info" type="button" @click="backStep" >Back</button>
     <button v-if="stepNumber!=6" class="button is-info" type="button" @click="nextStep" >Next</button>
@@ -62,13 +62,20 @@ import InputTag from "@/components/InputTag";
 import { useStore } from "vuex";
 import db from "../firebase/firestore";
 
-const roomRef = db.collection('room');
 const bookmarkRef = db.collection('bookmark');
 
 export default {
   name: "AddBookmark",
 
-  components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL, CheckInput},
+  components: {
+    InputTag,
+    InputReason,
+    InputAbstract,
+    InputParam,
+    InputSearchWords,
+    InputURL,
+    CheckInput
+  },
 
   setup(){
     const store = useStore();
@@ -97,7 +104,7 @@ export default {
       const bookmark = store.getters.bookmark;
 
       bookmarkRef.doc(bookmark.title).set({
-        id: room.name,
+        id: room.id,
         url: bookmark.url,
         title: bookmark.title,
         search_word: bookmark.search_word,
@@ -114,19 +121,15 @@ export default {
     }
 
     onMounted(() => {
-      room.name = store.getters.room_name;
-      roomRef.doc(room.name).get()
-          .then(() => {
-            console.log("取得成功")
-          }).catch(() => {
-        console.log("取得失敗")
-      })
+      room.id = store.getters.room_id;
     })
 
     onUnmounted(() => {
       console.log("unmounted");
       store.dispatch("initBookmark");
     })
+
+
 
     return{
       stepNumber,
