@@ -1,6 +1,12 @@
 <template>
-  <div class="add_bookmark">
-    <table class="table">
+  <table class="table">
+    <thead>
+    <tr>
+      <th><div style="width: 80px;"></div></th>
+      <th><div style="width: auto;"></div></th>
+    </tr>
+    </thead>
+    <tbody>
       <tr>
         <td colspan="2">
           <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')">
@@ -37,23 +43,19 @@
         <th>タグ</th>
         <td>{{ bookmark.tag.length==0 ? "なし" : bookmark.tag }}</td>
       </tr>
-    </table>
-  </div>
+    </tbody>
+  </table>
 </template>
 
 <script>
 export default {
   name: "AddBookmark",
   props: ["bookmark"],
-  setup(props) {
-    console.log(props.bookmark);
-  }
 }
 </script>
 
 <style scoped>
 img{
   width: 100px;
-  height: 100px;
 }
 </style>
