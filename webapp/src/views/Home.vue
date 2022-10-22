@@ -19,5 +19,10 @@ export default {
 </script>
 
 <style scoped>
-
+.create-room-button {
+  margin: 20px;
+}
+.search-room-button {
+  margin: 20px;
+}
 </style>

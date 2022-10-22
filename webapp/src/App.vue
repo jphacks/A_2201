@@ -1,15 +1,14 @@
 <template>
-  <router-link to="/">Home</router-link> |
-  <router-link to="/about">About</router-link> |
-  <router-link to="/create">Create</router-link> |
-  <router-link to="/join">Join</router-link>
+  <router-link to="/">
+    <img alt="zoo-saver" src="./assets/zoo-saver.png">
+  </router-link>
   <router-view/>
 </template>
 
 <script>
 
 export default {
-  name: 'App',
+  name: 'App'
 }
 </script>
 
@@ -21,6 +20,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 </style>
