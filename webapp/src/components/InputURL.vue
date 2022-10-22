@@ -41,12 +41,16 @@ export default {
       store.dispatch("inputUrl", url.value);
       console.log(document.URL);
 
+      store.dispatch("setInvalidUrl");
+
       let url_info;
       try {
         url_info = new URL(url.value);
         console.log(url_info);
+        store.dispatch("setValidUrl");
       } catch(e) {
         console.log(e);
+        store.dispatch("setInvalidUrl");
       }
     };
 
