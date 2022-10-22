@@ -20,7 +20,11 @@
       <tbody>
         <tr v-for="(bookmark, index) in bookmarks" v-bind:key="bookmark.id">
           <td> <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')"> </td>
-          <td>{{ bookmark.title }}</td>
+          <td>
+            <a :href=bookmark.url>
+              {{ bookmark.title }}
+            </a>
+          </td>
           <td>{{ bookmark.search_word }}</td>
           <td class="has-text-centered">
             <button class="button is-small is-primary" @click="modalAction(index)">
@@ -43,11 +47,6 @@
               </div>
             </div>
             <!-- ここまでモーダルウィンドウ -->
-          </td>
-          <td class="has-text-centered">
-            <button class="button is-small is-primary">
-              編集
-            </button>
           </td>
           <td class="has-text-centered">
             <button class="button is-small is-primary" @click="showPopup(index)">
