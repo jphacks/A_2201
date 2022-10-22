@@ -19,7 +19,11 @@
       </thead>
       <tbody>
         <tr v-for="(bookmark, index) in bookmarks" v-bind:key="bookmark.id">
-          <td> <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')"> </td>
+          <td>
+            <figure class="image is-64x64">
+              <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')">
+            </figure>
+          </td>
           <td>{{ bookmark.title }}</td>
           <td>{{ bookmark.search_word }}</td>
           <td class="has-text-centered">
@@ -195,10 +199,6 @@ export default {
   cursor: pointer;
 }
 
-img{
-  width: 100px;
-  height: 100px;
-}
 </style>
 
 
