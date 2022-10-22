@@ -21,8 +21,23 @@
     <div v-if="stepNumber==6">
     <InputTag/>
     </div>
-    <button v-if="stepNumber!=1" class="button is-info" type="button" @click="backStep" >Back</button>
-    <button v-if="stepNumber!=6" class="button is-info" type="button" @click="nextStep" >Next</button>
+    <button
+      v-if="stepNumber!=1"
+      class="button is-info"
+      type="button"
+      @click="backStep"
+    >
+      戻る
+    </button>
+    <button
+      v-if="stepNumber!=6"
+      class="button is-info"
+      type="button"
+      @click="nextStep"
+      :disabled="!store.getters.is_valid_url"
+    >
+      次へ
+    </button>
   </div>
   <div v-if="stepNumber==6">
     <input class="button is-info" type="button" value="ブックマークを登録する" @click="modalAction"/>
@@ -129,18 +144,16 @@ export default {
       store.dispatch("initBookmark");
     })
 
-
-
     return{
       stepNumber,
       backStep,
       nextStep,
       modal_flag,
       modalAction,
-      postBookmark
+      postBookmark,
+      store
     }
   },
-
 }
 </script>
 
