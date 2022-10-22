@@ -40,8 +40,6 @@ export default {
 
     const inputUrl = () => {
       store.dispatch("inputUrl", url.value);
-      console.log(document.URL);
-
       store.dispatch("setInvalidUrl");
 
       let url_info;
@@ -57,6 +55,9 @@ export default {
 
     const inputTitle = () => {
       store.dispatch("inputTitle", title.value);
+      store.dispatch("setInvalidTitle");
+
+      title.value != "" ? store.dispatch("setValidTitle"): store.dispatch("setInvalidTitle");
     };
 
     return {

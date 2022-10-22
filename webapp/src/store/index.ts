@@ -13,6 +13,7 @@ export default createStore({
         },
         room_id: "",
         is_valid_url: false,
+        is_valid_title: false,
     },
     getters: {
         bookmark(state) {
@@ -23,6 +24,9 @@ export default createStore({
         },
         is_valid_url(state) {
             return state.is_valid_url;
+        },
+        is_valid_title(state) {
+            return state.is_valid_title;
         },
     },
     mutations: {
@@ -65,6 +69,12 @@ export default createStore({
         setInvalidUrl(state){
             state.is_valid_url = false;
         },
+        setValidTitle(state){
+            state.is_valid_title = true;
+        },
+        setInvalidTitle(state){
+            state.is_valid_title = false;
+        },
     },
     actions: {
         initBookmark({ commit }) {
@@ -102,7 +112,13 @@ export default createStore({
         },
         setInvalidUrl({ commit }) {
             commit("setInvalidUrl");
-        }
+        },
+        setValidTitle({ commit }) {
+            commit("setValidTitle");
+        },
+        setInvalidTitle({ commit }) {
+            commit("setInvalidTitle");
+        },
     },
     modules: {},
 });
