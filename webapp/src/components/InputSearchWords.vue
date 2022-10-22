@@ -1,4 +1,5 @@
 <template>
+  <p>このWebページを見つけた時に入力した検索ワードは何でしたか？</p>
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label">検索ワード</label>
@@ -9,7 +10,7 @@
           <input
             class="input"
             type="text"
-            placeholder="ウェブページを見つけた時に入力した検索ワードを教えてください"
+            placeholder="（例）Java バージョン 変更"
             v-model="search_word"
             @change="inputSearchWord"
           >

@@ -14,9 +14,9 @@
         </div>
       </div>
     </div>
-    <div v-show="isExistRoom">
-      <p>その部屋はありません！</p>
-    </div>
+<!--    <div v-show="isExistRoom">-->
+<!--      <p>その部屋はありません！</p>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
             console.log(query);
             if (query.docs.length !== 0) {
               isExistRoom = true;
-              alert("※既にその部屋はあります");
+              alert("※既にその部屋は存在します。他の名前をお試しください。");
             } else {
               _roomRef.add({name: room.name})
                   .then(res => {

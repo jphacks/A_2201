@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
+    <h1>ZooSaverへようこそ！</h1>
+    <p>ZooSaverはブックマークを管理するアプリです。</p>
+    <p>個人やチームで部屋を作成し、部屋ごとにブックマークを管理できます！</p>
     <router-link to="/create">
       <input class="button is-primary" type="button" value="部屋を作る" />
     </router-link>

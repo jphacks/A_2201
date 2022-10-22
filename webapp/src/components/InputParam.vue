@@ -1,4 +1,5 @@
 <template>
+  <p>このWebページを自分なりに評価してみましょう！</p>
   <div class="container is-max-desktop">
     <div class="field is-horizontal">
       <div class="field-label is-normal">
@@ -45,19 +46,20 @@
       <div class="field-body">
         <label class="radio">
           <input type="radio" name="contents" v-model="choice3" value="3" @change="inputChoice">
-          はい
+          とてもわかりやすい
         </label>
         <label class="radio">
           <input type="radio" name="contents" v-model="choice3" value="2" @change="inputChoice">
-          どちらでもない
+          まあまあわかりやすい
         </label>
         <label class="radio">
           <input type="radio" name="contents" v-model="choice3" value="1" @change="inputChoice">
-          いいえ
+          普通
         </label>
       </div>
     </div>
   </div>
+  <p>このWebページを動物に例えると。。。</p>
   <div>
     <img alt="animal" :src="require('@/assets/'+ choice1 + '-' + choice3 + '-' + choice2 +'.png')">
   </div>

@@ -1,4 +1,5 @@
 <template>
+  <p>登録したいブックマークのURLを入力してください！</p>
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label">URL</label>
