@@ -4,22 +4,22 @@
 
     <p>Step{{stepNumber}}</p>
     <div v-if="stepNumber==1">
-    <InputURL/>
+      <InputURL/>
     </div>
     <div v-if="stepNumber==2">
-    <InputSearchWords/>
+      <InputSearchWords/>
     </div>
     <div v-if="stepNumber==3">
-    <InputAbstract/>
+      <InputAbstract/>
     </div>
     <div v-if="stepNumber==4">
-    <InputReason/>
+      <InputReason/>
     </div>
     <div v-if="stepNumber==5">
-    <InputParam/>
+      <InputParam/>
     </div>
     <div v-if="stepNumber==6">
-    <InputTag/>
+      <InputTag/>
     </div>
     <button
       v-if="stepNumber!=1"
