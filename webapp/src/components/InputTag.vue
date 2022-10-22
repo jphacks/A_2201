@@ -1,4 +1,5 @@
 <template>
+  <p>最後にタグ付けを行えます。該当するタグを選んでください!</p>
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label">タグ</label>

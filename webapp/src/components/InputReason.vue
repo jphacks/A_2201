@@ -1,4 +1,6 @@
 <template>
+  <p>このWebページを訪れた理由は何ですか？</p>
+  <p>調べたかったことや、困っていたこと、探していたことなどを教えてください！</p>
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label">理由</label>

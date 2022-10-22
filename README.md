@@ -44,7 +44,7 @@ https://team-bookmark-41340.web.app/
 
 #### フレームワーク・ライブラリ・モジュール
 * Vue.js
-* Bluma
+* Bulma
 
 #### デバイス
 * 

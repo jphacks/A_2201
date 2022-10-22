@@ -42,7 +42,7 @@ export default {
       if (roomDoc.docs.length !== 0)
         router.push({path: `/room/${roomDoc.docs[0].id}`});
       else
-        alert("ルーム「" + room.name + "」はありません");
+        alert("ルーム「" + room.name + "」は存在しません。入力ミスがないかご確認ください。");
         console.log("部屋がありません");
     }
 

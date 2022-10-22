@@ -1,8 +1,8 @@
 <template>
   <div class="add_bookmark">
-    <h1>ブックマーク追加</h1>
+    <h1>ブックマーク登録</h1>
 
-    <p>Step{{stepNumber}}</p>
+    <p>Step{{stepNumber}}/6</p>
     <div v-if="stepNumber==1">
       <InputURL/>
     </div>
@@ -158,5 +158,8 @@ export default {
 </script>
 
 <style scoped>
-
+p{
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

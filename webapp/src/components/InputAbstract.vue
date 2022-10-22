@@ -1,4 +1,6 @@
 <template>
+  <p>このWebページにはどんなことが書いてありましたか？ または、どのようなところが役に立ちましたか？</p>
+  <p>簡単に説明してみましょう！</p>
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label">要約</label>
@@ -8,7 +10,7 @@
         <div class="control">
           <textarea
             class="textarea"
-            placeholder="このブックマークについて簡単に説明してみてください(100文字以内)"
+            placeholder="このWebページについて簡単に説明してみてください(100文字以内)"
             v-model="summary"
             @change="inputSummary"
           >
