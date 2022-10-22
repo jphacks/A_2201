@@ -25,7 +25,7 @@
             </figure>
           </td>
           <td>
-            <a :href=bookmark.url>
+            <a :href=bookmark.url target="_blank">
               {{ bookmark.title }}
             </a>
           </td>
