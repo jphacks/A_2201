@@ -1,101 +1,62 @@
 <template>
   <div class="bookmark_list">
     <h1>「{{ room.name }}」の部屋へようこそ</h1>
-    <table class="table is-fullwidth">
-      <tr>
-        <th class="has-text-centered">タイトル</th>
-        <th class="has-text-centered">検索ワード</th>
-        <th class="has-text-centered">アイコン</th>
-        <th class="has-text-centered"></th>
-        <th class="has-text-centered"></th>
-        <th class="has-text-centered"></th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Vue.jsおすすめライブラリ１０選！</th>
-        <th class="has-text-centered">Vue.js ライブラリ 簡単</th>
-        <th class="has-text-centered">🐶</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Vue.jsのすゝめ</th>
-        <th class="has-text-centered">Vue.js ライブラリ 簡単</th>
-        <th class="has-text-centered">🐱</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Vue.jsの開発環境を構築</th>
-        <th class="has-text-centered">Vue.js 始め方</th>
-        <th class="has-text-centered">🦊</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="has-text-centered">Quarkus 入門</th>
-        <th class="has-text-centered">Quarkus 始め方</th>
-        <th class="has-text-centered">🐠</th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Info
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary">
-            Edit
-          </button>
-        </th>
-        <th class="has-text-centered">
-          <button class="button is-small is-primary" @click="showPopup(title)">
-            Delete
-          </button>
-        </th>
-      </tr>
-    </table>
     <router-link :to="{ name: 'AddBookmark' }">
       <button class="button is-small is-primary">
-        + add bookmark
+        + ブックマークを追加する
       </button>
     </router-link>
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th class="has-text-centered">アイコン</th>
+          <th class="has-text-centered">タイトル</th>
+          <th class="has-text-centered">検索ワード</th>
+          <th class="has-text-centered"></th>
+          <th class="has-text-centered"></th>
+          <th class="has-text-centered"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(bookmark, index) in bookmarks" v-bind:key="bookmark.id">
+          <td> <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')"> </td>
+          <td>{{ bookmark.title }}</td>
+          <td>{{ bookmark.search_word }}</td>
+          <td class="has-text-centered">
+            <button class="button is-small is-primary" @click="modalAction(index)">
+              詳細
+            </button>
+            <!-- ここからモーダルウィンドウ -->
+            <div :class="modal_flag[index] ? 'modal is-active': 'modal'">
+              <div class="modal-background"></div>
+              <div class="modal-card">
+                <header class="modal-card-head">
+                  <p class="modal-card-title">ブックマーク詳細</p>
+                  <button class="delete" aria-label="close" @click="modalAction(index)"></button>
+                </header>
+                <section class="modal-card-body">
+                  <BookmarkDetail class="content" :bookmark="bookmark"/>
+                </section>
+                <footer class="modal-card-foot">
+                  <button class="button" @click="modalAction(index)">閉じる</button>
+                </footer>
+              </div>
+            </div>
+            <!-- ここまでモーダルウィンドウ -->
+          </td>
+          <td class="has-text-centered">
+            <button class="button is-small is-primary">
+              編集
+            </button>
+          </td>
+          <td class="has-text-centered">
+            <button class="button is-small is-primary" @click="showPopup(title)">
+              削除
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div class="popup">
     <div class="popup-inner">
@@ -112,34 +73,48 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { useRoute } from 'vue-router'
-import { reactive, onMounted, ref } from "vue";
+import {useStore} from "vuex";
+import {useRoute} from 'vue-router'
+import {reactive, onMounted, ref} from "vue";
+import BookmarkDetail from "@/components/BookmarkDetail";
 
 import db from "../firebase/firestore"
 
 const roomRef = db.collection('room');
+const bookmarkRef = db.collection('bookmark');
 
 export default {
   name: "BookmarkList",
+  components: {
+    BookmarkDetail
+  },
   setup() {
     const store = useStore();
     const route = useRoute();
     const room = reactive({
       id: '',
       name: ''
+    });
+    let bookmarks = reactive([]);
+
+    onMounted(async () => {
+      room.id = route.params.id;
+      const roomDoc = await roomRef.doc(room.id).get();
+      room.name = roomDoc.data().name;
+      await store.dispatch("setRoomName", room.name);
+      await bookmarkRef.where("id", "==", room.id).get()
+          .then(query => {
+            query.forEach(bookmarkDoc => {
+              bookmarks.push(bookmarkDoc.data())
+              modal_flag.value.push(false);
+            })
+            console.log(modal_flag)
+          })
+          .catch(() => {
+            console.log("ブックマークの取得に失敗しました!");
+          });
     })
 
-    onMounted(() => {
-      room.name = route.params.id;
-      roomRef.doc(room.name).get()
-          .then(() => {
-            console.log("取得成功")
-            store.dispatch("setRoomName", room.name);
-          }).catch(() => {
-        console.log("取得失敗")
-      })
-    })
     const title = ref("ここにタイトルがはいる");
 
     const showPopup = (title) => {
@@ -147,34 +122,47 @@ export default {
       popup.style.visibility = "visible";
       let p = popup.getElementsByTagName("p")[0];
       p.innerText = "登録されたブックマークを削除します。よろしいですか?\n\"" + title + "\"";
-      this.delComment = title;
+      //this.delComment = title;
       // PCでのスクロール禁止
-      document.addEventListener("mousewheel", this.scroll_control, {passive: false});
+      //document.addEventListener("mousewheel", this.scroll_control, {passive: false});
       // スマホでのタッチ操作でのスクロール禁止
-      document.addEventListener("touchmove", this.scroll_control, {passive: false});
+      //document.addEventListener("touchmove", this.scroll_control, {passive: false});
     }
-    const hidePopup = () =>{
+    const hidePopup = () => {
       let popup = document.getElementsByClassName("popup")[0];
       popup.style.visibility = "hidden";
-      this.delComment=null;
+      //this.delComment = null;
       // PCでのスクロール禁止解除
-      document.removeEventListener("mousewheel", this.scroll_control, { passive: false });
+      //document.removeEventListener("mousewheel", this.scroll_control, {passive: false});
       // スマホでのタッチ操作でのスクロール禁止解除
-      document.removeEventListener('touchmove', this.scroll_control, { passive: false });
+      //document.removeEventListener('touchmove', this.scroll_control, {passive: false});
     }
-    const deleteBookMark = () =>{
+    const deleteBookMark = () => {
       hidePopup();
     }
 
+    const modal_flag = ref([]);
+    const modalAction = (id) => {
+      modal_flag.value[id] = !modal_flag.value[id];
+      console.log(modal_flag);
+    }
+
     return {
-      room,showPopup,hidePopup,deleteBookMark,title
+      room,
+      bookmarks,
+      showPopup,
+      hidePopup,
+      deleteBookMark,
+      title,
+      modal_flag,
+      modalAction
     }
   },
 }
 </script>
 
 <style scoped>
-.popup{
+.popup {
   left: 0;
   top: 0;
   width: 100%;
@@ -187,7 +175,7 @@ export default {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   width: 80%;
   max-width: 600px;
   padding: 50px;
@@ -195,15 +183,21 @@ export default {
   z-index: 2;
   text-align: center;
 }
+
 .black-background {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,.8);
+  background-color: rgba(0, 0, 0, .8);
   z-index: 1;
   cursor: pointer;
+}
+
+img{
+  width: 100px;
+  height: 100px;
 }
 </style>
 

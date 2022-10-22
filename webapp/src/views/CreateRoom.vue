@@ -14,39 +14,61 @@
         </div>
       </div>
     </div>
-    <p>エラー文はここ</p>
+    <div v-show="isExistRoom">
+      <p>その部屋はありません！</p>
+    </div>
   </div>
 </template>
 
 <script>
-import {reactive} from "vue";
+import {ref, reactive} from "vue";
 import {useRouter} from "vue-router"
 
 import db from "../firebase/firestore"
+
 const roomRef = db.collection('room');
+const _roomRef = db.collection('room');
 
 export default {
   name: "CreateRoom",
   setup() {
     const router = useRouter();
+    let isExistRoom = ref(false);
     const room = reactive({
       id: '1',
       name: ''
     })
 
-    const addRoom = () => {
-      roomRef.doc(room.name).set({
-        name: room.name
-      }).then(() =>{
-        console.log("ルーム「" + room.name + "」の作成に成功しました！");
-      }).catch(() => {
-        console.log("エラー！！！")
-        console.log("ルーム「" + room.name + "」の作成に失敗しました！");
-      })
-      router.push({path: `/room/${room.name}`})
+    const addRoom = async () => {
+      if(room.name === "") {
+        alert("※部屋名を入力してください");
+        return;
+      }
+      await roomRef.where("name", "==", room.name).get()
+          .then(query => {
+            console.log(query);
+            if (query.docs.length !== 0) {
+              isExistRoom = true;
+              alert("※既にその部屋はあります");
+            } else {
+              _roomRef.add({name: room.name})
+                  .then(res => {
+                    console.log("ルーム「" + room.name + "」の作成に成功しました！");
+                    router.push({path: `/room/${res.id}`});
+                  })
+                  .catch(() => {
+                    console.log("ルーム「" + room.name + "」の作成に失敗しました！");
+                  });
+            }
+          })
+          .catch(() => {
+            console.log("ルームの取得に失敗しました！");
+          });
     }
+
     return {
       room,
+      isExistRoom,
       addRoom
     }
   },

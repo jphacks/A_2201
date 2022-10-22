@@ -68,7 +68,15 @@ const bookmarkRef = db.collection('bookmark');
 export default {
   name: "AddBookmark",
 
-  components: {InputTag, InputReason, InputAbstract, InputParam, InputSearchWords, InputURL, CheckInput},
+  components: {
+    InputTag,
+    InputReason,
+    InputAbstract,
+    InputParam,
+    InputSearchWords,
+    InputURL,
+    CheckInput
+  },
 
   setup(){
     const store = useStore();
