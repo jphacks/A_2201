@@ -6,60 +6,61 @@
         + ブックマークを追加する
       </button>
     </router-link>
-    <table class="table is-fullwidth">
-      <thead>
-        <tr>
-          <th class="has-text-centered">アイコン</th>
-          <th class="has-text-centered">タイトル</th>
-          <th class="has-text-centered">検索ワード</th>
-          <th class="has-text-centered"></th>
-          <th class="has-text-centered"></th>
-          <th class="has-text-centered"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(bookmark, index) in bookmarks" v-bind:key="bookmark.id">
-          <td>
-            <figure class="image is-64x64">
-              <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')">
-            </figure>
-          </td>
-          <td>
-            <a :href=bookmark.url>
-              {{ bookmark.title }}
-            </a>
-          </td>
-          <td>{{ bookmark.search_word }}</td>
-          <td class="has-text-centered">
-            <button class="button is-small is-primary" @click="modalAction(index)">
-              詳細
-            </button>
-            <!-- ここからモーダルウィンドウ -->
-            <div :class="modal_flag[index] ? 'modal is-active': 'modal'">
-              <div class="modal-background"></div>
-              <div class="modal-card">
-                <header class="modal-card-head">
-                  <p class="modal-card-title">ブックマーク詳細</p>
-                  <button class="delete" aria-label="close" @click="modalAction(index)"></button>
-                </header>
-                <section class="modal-card-body">
-                  <BookmarkDetail class="content" :bookmark="bookmark"/>
-                </section>
-                <footer class="modal-card-foot">
-                  <button class="button" @click="modalAction(index)">閉じる</button>
-                </footer>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th class="has-text-centered">アイコン</th>
+            <th class="has-text-centered">タイトル</th>
+            <th class="has-text-centered">検索ワード</th>
+            <th class="has-text-centered"></th>
+            <th class="has-text-centered"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(bookmark, index) in bookmarks" v-bind:key="bookmark.id">
+            <td>
+              <figure class="image is-64x64">
+                <img alt="animal" :src="require('@/assets/'+ bookmark.choice[0] + '-' + bookmark.choice[2] + '-' + bookmark.choice[1] +'.png')">
+              </figure>
+            </td>
+            <td>
+              <a :href=bookmark.url target="_blank">
+                {{ bookmark.title }}
+              </a>
+            </td>
+            <td>{{ bookmark.search_word }}</td>
+            <td class="has-text-centered">
+              <button class="button is-small is-primary" @click="modalAction(index)">
+                詳細
+              </button>
+              <!-- ここからモーダルウィンドウ -->
+              <div :class="modal_flag[index] ? 'modal is-active': 'modal'">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                  <header class="modal-card-head">
+                    <p class="modal-card-title">ブックマーク詳細</p>
+                    <button class="delete" aria-label="close" @click="modalAction(index)"></button>
+                  </header>
+                  <section class="modal-card-body">
+                    <BookmarkDetail class="content" :bookmark="bookmark"/>
+                  </section>
+                  <footer class="modal-card-foot">
+                    <button class="button" @click="modalAction(index)">閉じる</button>
+                  </footer>
+                </div>
               </div>
-            </div>
-            <!-- ここまでモーダルウィンドウ -->
-          </td>
-          <td class="has-text-centered">
-            <button class="button is-small is-primary" @click="showPopup(index)">
-              削除
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <!-- ここまでモーダルウィンドウ -->
+            </td>
+            <td class="has-text-centered">
+              <button class="button is-small is-primary" @click="showPopup(index)">
+                削除
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="popup">
     <div class="popup-inner">
@@ -206,7 +207,6 @@ export default {
   z-index: 1;
   cursor: pointer;
 }
-
 </style>
 
 
