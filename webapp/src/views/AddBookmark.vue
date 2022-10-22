@@ -62,7 +62,6 @@ import InputTag from "@/components/InputTag";
 import { useStore } from "vuex";
 import db from "../firebase/firestore";
 
-const roomRef = db.collection('room');
 const bookmarkRef = db.collection('bookmark');
 
 export default {
@@ -105,7 +104,7 @@ export default {
       const bookmark = store.getters.bookmark;
 
       bookmarkRef.doc(bookmark.title).set({
-        id: room.name,
+        id: room.id,
         url: bookmark.url,
         title: bookmark.title,
         search_word: bookmark.search_word,
@@ -122,19 +121,15 @@ export default {
     }
 
     onMounted(() => {
-      room.name = store.getters.room_name;
-      roomRef.doc(room.name).get()
-          .then(() => {
-            console.log("取得成功")
-          }).catch(() => {
-        console.log("取得失敗")
-      })
+      room.id = store.getters.room_id;
     })
 
     onUnmounted(() => {
       console.log("unmounted");
       store.dispatch("initBookmark");
     })
+
+
 
     return{
       stepNumber,
