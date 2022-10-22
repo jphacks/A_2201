@@ -1,7 +1,9 @@
 # Zoo Saver (ブックマーク管理アプリ)
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)
+![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)
 
+## URL
+https://team-bookmark-41340.web.app/
 ## 製品概要
 ブックマークを保存するときに、そのブックマークに関する情報を共に記録できる。また、そのブックマークの情報から、動物が表示されることで、記憶に残りやすくする。  
 後から、保存したブックマークを検索する際に、それらの情報をもとに、内容を思い出すことを助ける。  
